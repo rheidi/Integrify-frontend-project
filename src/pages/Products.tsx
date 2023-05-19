@@ -6,19 +6,22 @@ import { fetchAllProducts } from '../redux/reducers/productsReducer'
 
 const Products = () => {
 
-  const products = useAppSelector(state => state.productsReducer)
+  const productsState = useAppSelector(state => state.productsReducer)
 
   const dispatch = useAppDispatch()
 
   useEffect(() => {
     dispatch(fetchAllProducts())
-  }, [])
+  }, [dispatch])
 
   return (
     <div>
       <h1>Products</h1>
-      {products.map(p => (
-        <p key={p.id}>{p.title}</p>
+      {productsState.products.map(p => (
+        <>
+          <p key={p.id}>{p.title}</p>
+          <a href={'/products/'+p.id}>More information</a>
+        </>
       ))}
     </div>
   )

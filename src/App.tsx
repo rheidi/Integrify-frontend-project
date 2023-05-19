@@ -6,6 +6,7 @@ import useAppDispatch from './hooks/useAppDispatch'
 import Home from './pages/Home'
 import Products from './pages/Products'
 import Layout from './pages/Layout'
+import Product from './pages/Product'
 
 const App = () => {
   //const globalState = useSelector(state => state)
@@ -33,6 +34,7 @@ const App = () => {
         <Route path='/' element={<Layout />}>
           <Route index element={<Home />} />
           <Route path='products' element={<Products />} />
+          <Route path='products/:id' element={<Product />} />
         </Route>
       </Routes>
     </BrowserRouter>
