@@ -13,7 +13,12 @@ const Products = () => {
   const {products} = useAppSelector(state => state.productsReducer)
   const dispatch = useAppDispatch()
   const [search, setSearch] = useState('')
-  const filterProducts = getFilteredList(products, search)
+  const [debouncedSearch, setDebouncedSearch] = useState(search)
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedSearch(search), 1000)
+    return () => clearTimeout(timer)
+  }, [search])
+  const filterProducts = getFilteredList(products, debouncedSearch)
 
   useEffect(() => {
     dispatch(fetchAllProducts())
