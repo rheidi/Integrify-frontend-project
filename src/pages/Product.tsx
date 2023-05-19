@@ -24,6 +24,7 @@ const Product = () => {
       <p>{productState.product?.title}</p>
       <p>{productState.product?.price}</p>
       <p>{productState.product?.category.name}</p>
+      <p>{productState.product?.description}</p>
     </div>
   )
 }
