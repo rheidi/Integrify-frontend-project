@@ -1,14 +1,19 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import useAppDispatch from '../hooks/useAppDispatch'
 import useAppSelector from '../hooks/useAppSelector'
 import { fetchAllProducts, sortByPrice } from '../redux/reducers/productsReducer'
+import { Product } from '../types/Product'
+
+const getFilteredList = (products: Product[], search: string) => {
+  return products.filter(product => product.title.toLowerCase().includes(search.toLocaleLowerCase()))
+}
 
 const Products = () => {
-
-  const productsState = useAppSelector(state => state.productsReducer)
-
+  const {products} = useAppSelector(state => state.productsReducer)
   const dispatch = useAppDispatch()
+  const [search, setSearch] = useState('')
+  const filterProducts = getFilteredList(products, search)
 
   useEffect(() => {
     dispatch(fetchAllProducts())
@@ -24,10 +29,14 @@ const Products = () => {
     }
   }
 
+  const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value)
+  }
+
   return (
     <div>
       <h1>Products</h1>
-      <div className="dropdown">
+      <div className='dropdownSort'>
         <label htmlFor='sort'>Sort by: </label>
         <select id='sort' onChange={(event) => setSortProperty(event.target.value)}>
           <option value={'none'}>none</option>
@@ -35,7 +44,17 @@ const Products = () => {
           <option value={'priceDesc'}>Price, descending</option>
         </select>
       </div>
-      {productsState.products.map(p => (
+      <div>
+      <label htmlFor='search'>Search for a product: </label>
+        <input 
+          type='text'
+          name='search'
+          id='search'
+          value={search}
+          onChange={onSearchChange}
+        />
+      </div>
+      {filterProducts.map(p => (
         <div key={p.id}>
           <p>{p.title}</p>
           <p>{p.price}</p>
