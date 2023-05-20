@@ -9,9 +9,7 @@ const Product = () => {
 
   const id = useParams().id
   const productState = useAppSelector(state => state.productsReducer)
-  console.log(productState);
   
-
   const dispatch = useAppDispatch()
 
   useEffect(() => {

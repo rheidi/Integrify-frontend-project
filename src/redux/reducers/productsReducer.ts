@@ -51,7 +51,7 @@ const productsSlice = createSlice({
   initialState,
   reducers: {
     createProduct: (state, action: PayloadAction<Product>) => {
-      //state.push(action.payload)
+      state.products.push(action.payload)
     },
     sortByPrice: (state, action: PayloadAction<'priceAsc' | 'priceDesc'>) => {
       if (action.payload === "priceAsc") {

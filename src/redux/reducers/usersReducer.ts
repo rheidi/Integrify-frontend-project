@@ -2,8 +2,21 @@ import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 
 import { User } from "../../types/User";
+import { UserCredential } from "../../types/UserCredential";
 
-const initialState: User[] = []
+interface UserReducer {
+  users: User[]
+  currentUser?: User
+  loading: boolean
+  error: string
+  
+}
+
+const initialState: UserReducer = {
+  users: [],
+  loading: false,
+  error: ''
+}
 
 export const fetchAllUsers = createAsyncThunk(
   'fetchAllUsers',
@@ -13,11 +26,26 @@ export const fetchAllUsers = createAsyncThunk(
       return result.data
     } catch (e) {
       const error = e as AxiosError
-      if (error.request) {
-        console.log('error in request: ', error.request)        
-      } else {
-        console.log(error.response?.data)
-      }
+      return error
+    }
+  }
+)
+
+export const login = createAsyncThunk(
+  'login',
+  async ({email, password}: UserCredential) => {
+    try {
+      const result = await axios.post<{access_token: string}>('https://api.escuelajs.co/api/v1/auth/login', {email, password})
+      const authentication = await axios.get<User>('https://api.escuelajs.co/api/v1/auth/profile', {
+        headers: {
+          'Authorization': `Bearer ${result.data.access_token}`
+        }
+      })
+      return authentication.data
+    }
+    catch (e) {
+      const error = e as AxiosError
+      return error
     }
   }
 )
@@ -27,23 +55,41 @@ const usersSlice = createSlice({
   initialState,
   reducers: {
     createUser: (state, action: PayloadAction<User>) => {
-      state.push(action.payload)
+      state.users.push(action.payload)
     },
     updateUserReducer: (state, action: PayloadAction<User[]>) => {
-      return action.payload
+      //return action.payload
     },
     emptyUsersReducer: (state) => {
-      return []
+      state.users = []
     },
     updateOneUser: (state, action) => {
       
     }
   },
   extraReducers: (build) => {
-    build.addCase(fetchAllUsers.fulfilled, (state, action) => {
-      if (action.payload) {
-        return action.payload
+    build
+      .addCase(fetchAllUsers.fulfilled, (state, action) => {
+        if (action.payload instanceof AxiosError) {
+          state.error = action.payload.message
+        } else {
+          state.users = action.payload
+        }
+        state.loading = false
+    })
+    .addCase(fetchAllUsers.pending, (state, action) => {
+      state.loading = true
+    })
+    .addCase(fetchAllUsers.rejected, (state, action) => {
+      state.error = "Cannot fetch data"
+    })
+    .addCase(login.fulfilled, (state, action) => {
+      if (action.payload instanceof AxiosError) {
+        state.error = action.payload.message
+      } else {
+        state.currentUser = action.payload
       }
+      state.loading = false
     })
   }
 })

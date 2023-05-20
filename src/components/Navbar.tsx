@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom"
+import useAppSelector from "../hooks/useAppSelector"
 
 function Navbar() {
+    const userState = useAppSelector(state => state.usersReducer)
+    const {currentUser} = userState
+
     return (
         <nav>
             <ul>
@@ -10,6 +14,8 @@ function Navbar() {
                 <li>
                     <Link to="/products">Products</Link>
                 </li>
+                {currentUser ? <p>Current User: {currentUser.name}</p> : ''}
+                
             </ul>
         </nav>
     )
