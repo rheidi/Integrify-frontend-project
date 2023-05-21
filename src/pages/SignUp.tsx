@@ -1,21 +1,26 @@
 import React, { useState } from 'react'
 
 import useAppDispatch from '../hooks/useAppDispatch'
-import { login } from '../redux/reducers/usersReducer'
-import { Link } from 'react-router-dom'
+import { newUser } from '../redux/reducers/usersReducer'
 
-const Login = () => {
+const SignUp = () => {
   const dispatch = useAppDispatch()
+  const [name, setName] =useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const avatar = 'https://picsum.photos/300'
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    dispatch(login({email, password}))
+    dispatch(newUser({name, email, password, avatar}))
   }
   return (
     <div>
-      <h1>Login</h1>
+      <h1>Register new user</h1>
       <form onSubmit={(e) => handleSubmit(e)}>
+        <label id='name'>name:
+          <input onChange={(e) => setName(e.target.value)} name='name' value={name} />
+        </label>
+        <br />
         <label id='email'>email:
           <input onChange={(e) => setEmail(e.target.value)} name='email' value={email} />
         </label>
@@ -26,12 +31,8 @@ const Login = () => {
         <br />
         <button type='submit'>Submit</button>
       </form>
-      <br />
-      <h2>Register</h2>
-      <p>If you don't have an account, you can register here:</p>
-      <Link to='/signup'>Sign up here</Link>
     </div>
   )
 }
 
-export default Login
+export default SignUp

@@ -3,6 +3,7 @@ import axios, { AxiosError } from "axios";
 
 import { User } from "../../types/User";
 import { UserCredential } from "../../types/UserCredential";
+import { NewUser } from "../../types/NewUser";
 
 interface UserReducer {
   users: User[]
@@ -25,6 +26,20 @@ export const fetchAllUsers = createAsyncThunk(
       const result = await axios.get<User[]>('https://api.escuelajs.co/api/v1/users')
       return result.data
     } catch (e) {
+      const error = e as AxiosError
+      return error
+    }
+  }
+)
+
+export const newUser = createAsyncThunk(
+  'newUser',
+  async ({name, email, password, avatar}: NewUser) => {
+    try {
+      const result = await axios.post<User>('https://api.escuelajs.co/api/v1/users/', {name, email, password, avatar})
+      return result.data
+    }
+    catch (e) {
       const error = e as AxiosError
       return error
     }
@@ -54,9 +69,6 @@ const usersSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
-    createUser: (state, action: PayloadAction<User>) => {
-      state.users.push(action.payload)
-    },
     updateUserReducer: (state, action: PayloadAction<User[]>) => {
       //return action.payload
     },
@@ -91,9 +103,16 @@ const usersSlice = createSlice({
       }
       state.loading = false
     })
+    .addCase(newUser.fulfilled, (state, action) => {
+      if (action.payload instanceof AxiosError) {
+        state.error = action.payload.message
+      } else {
+        state.users.push(action.payload)
+      }
+    })
   }
 })
 
 const usersReducer = usersSlice.reducer
-export const { createUser, updateUserReducer } = usersSlice.actions
+export const { updateUserReducer } = usersSlice.actions
 export default usersReducer
