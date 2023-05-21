@@ -8,6 +8,7 @@ import Products from './pages/Products'
 import Layout from './pages/Layout'
 import Product from './pages/Product'
 import Profile from './pages/Profile'
+import Login from './pages/Login'
 
 const App = () => {
   //const globalState = useSelector(state => state)
@@ -45,6 +46,7 @@ const App = () => {
           <Route index element={<Home />} />
           <Route path='products' element={<Products />} />
           <Route path='products/:id' element={<Product />} />
+          <Route path='login' element={<Login />} />
           <Route element={<PrivateRoutes />}>
             <Route path='profile' element={<Profile />} />
           </Route>
