@@ -14,9 +14,11 @@ function Navbar() {
                 <li>
                     <Link to="/products">Products</Link>
                 </li>
-                {currentUser ? <p>Current User: {currentUser.name}</p> : ''}
-                
+                <li>
+                <Link to='/profile'>User Page</Link>
+                </li>
             </ul>
+            {currentUser ? <p>Current User: {currentUser.name}</p> : ''}
         </nav>
     )
 }
