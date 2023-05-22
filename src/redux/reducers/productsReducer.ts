@@ -2,14 +2,20 @@ import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios, { AxiosError } from "axios"
 
 import { Product } from "../../types/Product"
+import { NewProduct } from "../../types/NewProduct"
 
 interface ProductReducer {
   products: Product[]
   product?: Product
+  loading: boolean
+  error: string
+  
 }
 
 const initialState : ProductReducer = {
-  products: []
+  products: [],
+  loading: false,
+  error: ''
 }
 
 export const fetchAllProducts = createAsyncThunk(
@@ -46,6 +52,31 @@ export const fetchOneProduct = createAsyncThunk(
   }
 )
 
+export const createNewProduct = createAsyncThunk(
+  'createNewProduct',
+  async (product: NewProduct) => {
+    try {
+      const result = await axios.post<Product>('https://api.escuelajs.co/api/v1/products/', product)
+      return result.data
+    } catch (e) {
+      const error = e as AxiosError
+      return error.message
+    }
+  }
+)
+
+/* export const updateProduct = createAsyncThunk(
+  'updateProduct',
+  async ({id}) => {
+    try {
+      const result = await axios.put<Product>('https://api.escuelajs.co/api/v1/products/'+id)
+    } catch (e) {
+      const error = e as AxiosError
+      return error
+    }
+  }
+) */
+
 const productsSlice = createSlice({
   name: 'products',
   initialState,
@@ -72,6 +103,14 @@ const productsSlice = createSlice({
         if (action.payload) {
           state.product = action.payload
         }
+      })
+      .addCase(createNewProduct.fulfilled, (state, action) => {
+        if (typeof action.payload === 'string') {
+          state.error = action.payload
+        } else {
+          state.products.push(action.payload)
+        }
+        state.loading = false
       })
   }
 })

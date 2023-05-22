@@ -19,6 +19,9 @@ function Navbar() {
                     :
                     <li><Link to='/login'>Login</Link></li>
                 }
+                {currentUser && currentUser.role === 'admin' &&
+                    <li><Link to='/new_product'>Create a new product</Link></li>
+                }                
             </ul>
             {currentUser ? <p>Current User: {currentUser.name}</p> : ''}
         </nav>

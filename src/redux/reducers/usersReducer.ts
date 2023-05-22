@@ -10,7 +10,6 @@ interface UserReducer {
   currentUser?: User
   loading: boolean
   error: string
-  
 }
 
 const initialState: UserReducer = {
@@ -76,7 +75,6 @@ const usersSlice = createSlice({
       state.users = []
     },
     updateOneUser: (state, action) => {
-      
     }
   },
   extraReducers: (build) => {

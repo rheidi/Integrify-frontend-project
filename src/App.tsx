@@ -8,13 +8,14 @@ import Product from './pages/Product'
 import Profile from './pages/Profile'
 import Login from './pages/Login'
 import SignUp from './pages/SignUp'
+import CreateNewProduct from './pages/CreateNewProduct'
 
 const App = () => {
-  const PrivateRoutes = () => {
-    const userState = useAppSelector(state => state.usersReducer)
-    const {currentUser} = userState
+  const userState = useAppSelector(state => state.usersReducer)
+  const {currentUser} = userState
+  const PrivateRoutes = ({isAllowed} : {isAllowed: boolean}) => {
   return (
-      currentUser ? <Outlet/> : <Navigate to='login'/>
+      isAllowed ? <Outlet/> : <Navigate to='login'/>
     )
   }
 
@@ -27,9 +28,13 @@ const App = () => {
           <Route path='products/:id' element={<Product />} />
           <Route path='login' element={<Login />} />
           <Route path='signup' element={<SignUp />} />
-          <Route element={<PrivateRoutes />}>
+          <Route element={<PrivateRoutes isAllowed={!!currentUser} />}>
             <Route path='profile' element={<Profile />} />
           </Route>
+          <Route element={<PrivateRoutes isAllowed={!!currentUser && currentUser.role === 'admin'}/>}>
+            <Route path='new_product' element={<CreateNewProduct />} />
+          </Route>
+          
         </Route>
       </Routes>
     </BrowserRouter>
