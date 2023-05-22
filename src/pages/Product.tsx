@@ -19,10 +19,11 @@ const Product = () => {
   return (
     <div>
       <h1>Product info</h1>
-      <p>{productState.product?.title}</p>
-      <p>{productState.product?.price}</p>
-      <p>{productState.product?.category.name}</p>
-      <p>{productState.product?.description}</p>
+      <p>Name: {productState.product?.title}</p>
+      <p>Price: {productState.product?.price}</p>
+      <p>Category: {productState.product?.category.name}</p>
+      <p>Deascription: {productState.product?.description}</p>
+      <img src={productState.product?.images[0]} alt='A product pic' />
     </div>
   )
 }

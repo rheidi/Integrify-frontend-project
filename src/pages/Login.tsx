@@ -16,15 +16,18 @@ const Login = () => {
     <div>
       <h1>Login</h1>
       <form onSubmit={(e) => handleSubmit(e)}>
-        <label id='email'>email:
-          <input onChange={(e) => setEmail(e.target.value)} name='email' value={email} />
-        </label>
-        <br />
-        <label id='password'>password:
-          <input onChange={(e) => setPassword(e.target.value)} name='password' value={password} />
-        </label>
-        <br />
-        <button type='submit'>Submit</button>
+        <fieldset>
+          <legend>Log in:</legend>        
+          <label id='email'>email:
+            <input onChange={(e) => setEmail(e.target.value)} name='email' value={email} />
+          </label>
+          <br />
+          <label id='password'>password:
+            <input onChange={(e) => setPassword(e.target.value)} name='password' value={password} />
+          </label>
+          <br />
+          <button type='submit'>Submit</button>
+        </fieldset>
       </form>
       <br />
       <h2>Register</h2>

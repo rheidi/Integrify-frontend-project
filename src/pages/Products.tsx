@@ -61,8 +61,8 @@ const Products = () => {
       </div>
       {filterProducts.map(p => (
         <div key={p.id}>
-          <p>{p.title}</p>
-          <p>{p.price}</p>
+          <p>Product name: {p.title}</p>
+          <p>Product price: {p.price}</p>
           <a href={'/products/'+p.id}>More information</a>
         </div>
       ))}

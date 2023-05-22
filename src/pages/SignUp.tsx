@@ -17,19 +17,22 @@ const SignUp = () => {
     <div>
       <h1>Register new user</h1>
       <form onSubmit={(e) => handleSubmit(e)}>
-        <label id='name'>name:
-          <input onChange={(e) => setName(e.target.value)} name='name' value={name} />
-        </label>
-        <br />
-        <label id='email'>email:
-          <input onChange={(e) => setEmail(e.target.value)} name='email' value={email} />
-        </label>
-        <br />
-        <label id='password'>password:
-          <input onChange={(e) => setPassword(e.target.value)} name='password' value={password} />
-        </label>
-        <br />
-        <button type='submit'>Submit</button>
+        <fieldset>
+          <legend>Registration info:</legend>
+          <label id='name'>name:
+            <input onChange={(e) => setName(e.target.value)} name='name' value={name} />
+          </label>
+          <br />
+          <label id='email'>email:
+            <input onChange={(e) => setEmail(e.target.value)} name='email' value={email} />
+          </label>
+          <br />
+          <label id='password'>password:
+            <input onChange={(e) => setPassword(e.target.value)} name='password' value={password} />
+          </label>
+          <br />
+          <button type='submit'>Submit</button>
+        </fieldset>
       </form>
     </div>
   )
