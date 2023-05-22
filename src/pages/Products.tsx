@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import useAppDispatch from '../hooks/useAppDispatch'
 import useAppSelector from '../hooks/useAppSelector'
-import { fetchAllProducts, sortByPrice } from '../redux/reducers/productsReducer'
+import { deleteProduct, fetchAllProducts, sortByPrice } from '../redux/reducers/productsReducer'
 import { Product } from '../types/Product'
 
 const getFilteredList = (products: Product[], search: string) => {
@@ -38,6 +38,9 @@ const Products = () => {
     setSearch(e.target.value)
   }
 
+  const userState = useAppSelector(state => state.usersReducer)
+    const {currentUser} = userState
+
   return (
     <div>
       <h1>Products</h1>
@@ -64,6 +67,11 @@ const Products = () => {
           <p>Product name: {p.title}</p>
           <p>Product price: {p.price}</p>
           <a href={'/products/'+p.id}>More information</a>
+          <br />
+          {currentUser && currentUser.role === 'admin' &&
+            <button onClick={() => dispatch(deleteProduct(p.id))}>Delete product</button>
+          }
+          <hr />
         </div>
       ))}
     </div>

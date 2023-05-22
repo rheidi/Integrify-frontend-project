@@ -65,6 +65,22 @@ export const createNewProduct = createAsyncThunk(
   }
 )
 
+export const deleteProduct = createAsyncThunk(
+  'deleteProduct',
+  async (id: number) => {
+    try {
+      const result = await axios.delete<boolean>('https://api.escuelajs.co/api/v1/products/'+id)
+      if (result.data) {
+        return id
+      }
+      return NaN
+    } catch (e) {
+      const error = e as AxiosError
+      return error
+    }
+  }
+)
+
 /* export const updateProduct = createAsyncThunk(
   'updateProduct',
   async ({id}) => {
@@ -109,6 +125,14 @@ const productsSlice = createSlice({
           state.error = action.payload
         } else {
           state.products.push(action.payload)
+        }
+        state.loading = false
+      })
+      .addCase(deleteProduct.fulfilled, (state, action) => {
+        if (typeof action.payload === 'string') {
+          state.error = action.payload
+        } else if (!Number.isNaN(action.payload)) {
+          state.products = state.products.filter(p => p.id !== action.payload)
         }
         state.loading = false
       })
