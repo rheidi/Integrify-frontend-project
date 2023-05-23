@@ -2,15 +2,17 @@ import React, { useState } from 'react'
 
 import useAppDispatch from '../hooks/useAppDispatch'
 import { login } from '../redux/reducers/usersReducer'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Login = () => {
   const dispatch = useAppDispatch()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const navigate = useNavigate()
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     dispatch(login({email, password}))
+    navigate('/')
   }
   return (
     <div>
@@ -19,11 +21,11 @@ const Login = () => {
         <fieldset>
           <legend>Log in:</legend>        
           <label id='email'>email:
-            <input onChange={(e) => setEmail(e.target.value)} name='email' value={email} />
+            <input onChange={(e) => setEmail(e.target.value)} type='email' name='email' value={email} />
           </label>
           <br />
           <label id='password'>password:
-            <input onChange={(e) => setPassword(e.target.value)} name='password' value={password} />
+            <input onChange={(e) => setPassword(e.target.value)} type='password' name='password' value={password} />
           </label>
           <br />
           <button type='submit'>Submit</button>

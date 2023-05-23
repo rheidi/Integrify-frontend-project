@@ -3,6 +3,7 @@ import axios, { AxiosError } from "axios"
 
 import { Product } from "../../types/Product"
 import { NewProduct } from "../../types/NewProduct"
+import { ProductUpdate } from "../../types/ProductUpdate"
 
 interface ProductReducer {
   products: Product[]
@@ -26,11 +27,7 @@ export const fetchAllProducts = createAsyncThunk(
       return result.data
     } catch (e) {
       const error = e as AxiosError
-      if (error.request) {
-        console.log('error in request: ', error.request)        
-      } else {
-        console.log(error.response?.data)
-      }
+      return error
     }
   }
 )
@@ -43,11 +40,7 @@ export const fetchOneProduct = createAsyncThunk(
       return result.data
     } catch (e) {
       const error = e as AxiosError
-      if (error.request) {
-        console.log('error in request: ', error.request)        
-      } else {
-        console.log(error.response?.data)
-      }
+      return error
     }
   }
 )
@@ -69,7 +62,7 @@ export const deleteProduct = createAsyncThunk(
   'deleteProduct',
   async (id: number) => {
     try {
-      const result = await axios.delete<boolean>('https://api.escuelajs.co/api/v1/products/'+id)
+      const result = await axios.delete<boolean>('https://api.escuelajs.co/api/v1/products/'+ id)
       if (result.data) {
         return id
       }
@@ -81,25 +74,24 @@ export const deleteProduct = createAsyncThunk(
   }
 )
 
-/* export const updateProduct = createAsyncThunk(
+export const updateProduct = createAsyncThunk(
   'updateProduct',
-  async ({id}) => {
+  async (update: ProductUpdate) => {
     try {
-      const result = await axios.put<Product>('https://api.escuelajs.co/api/v1/products/'+id)
+      const { id, ...updateObject } = update 
+      const result = await axios.put<Product>('https://api.escuelajs.co/api/v1/products/'+ id, updateObject)
+      return result.data
     } catch (e) {
       const error = e as AxiosError
       return error
     }
   }
-) */
+)
 
 const productsSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {
-    createProduct: (state, action: PayloadAction<Product>) => {
-      state.products.push(action.payload)
-    },
     sortByPrice: (state, action: PayloadAction<'priceAsc' | 'priceDesc'>) => {
       if (action.payload === "priceAsc") {
         state.products.sort((a, b) => a.price - b.price)
@@ -111,12 +103,18 @@ const productsSlice = createSlice({
   extraReducers: (build) => {
     build
       .addCase(fetchAllProducts.fulfilled, (state, action) => {
-        if (action.payload) {
+        if (action.payload instanceof AxiosError) {
+          state.error = action.payload.message
+        }
+        else {
           state.products = action.payload
         }
       })
       .addCase(fetchOneProduct.fulfilled, (state, action) => {
-        if (action.payload) {
+        if (action.payload instanceof AxiosError) {
+          state.error = action.payload.message
+        }
+        else {
           state.product = action.payload
         }
       })
@@ -129,10 +127,20 @@ const productsSlice = createSlice({
         state.loading = false
       })
       .addCase(deleteProduct.fulfilled, (state, action) => {
-        if (typeof action.payload === 'string') {
-          state.error = action.payload
+        if (action.payload instanceof AxiosError) {
+          state.error = action.payload.message
         } else if (!Number.isNaN(action.payload)) {
           state.products = state.products.filter(p => p.id !== action.payload)
+        }
+        state.loading = false
+      })
+      .addCase(updateProduct.fulfilled, (state, action) => {
+        if (action.payload instanceof AxiosError) {
+          state.error = action.payload.message
+        } else {
+          const prod = action.payload
+          state.products = state.products.map(p => p.id === prod.id ? prod : p)
+          state.product = prod
         }
         state.loading = false
       })
@@ -141,7 +149,6 @@ const productsSlice = createSlice({
 
 const  productsReducer = productsSlice.reducer
 export const {
-  createProduct,
   sortByPrice
 } = productsSlice.actions
 export default productsReducer

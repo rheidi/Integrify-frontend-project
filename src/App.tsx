@@ -34,7 +34,6 @@ const App = () => {
           <Route element={<PrivateRoutes isAllowed={!!currentUser && currentUser.role === 'admin'}/>}>
             <Route path='new_product' element={<CreateNewProduct />} />
           </Route>
-          
         </Route>
       </Routes>
     </BrowserRouter>

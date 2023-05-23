@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 
 import useAppDispatch from '../hooks/useAppDispatch'
 import { newUser } from '../redux/reducers/usersReducer'
+import { useNavigate } from 'react-router-dom'
 
 const SignUp = () => {
   const dispatch = useAppDispatch()
@@ -9,9 +10,11 @@ const SignUp = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const avatar = 'https://picsum.photos/300'
+  const navigate = useNavigate()
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     dispatch(newUser({name, email, password, avatar}))
+    navigate('/login')
   }
   return (
     <div>
@@ -24,11 +27,11 @@ const SignUp = () => {
           </label>
           <br />
           <label id='email'>email:
-            <input onChange={(e) => setEmail(e.target.value)} name='email' value={email} />
+            <input onChange={(e) => setEmail(e.target.value)} type='email' name='email' value={email} />
           </label>
           <br />
           <label id='password'>password:
-            <input onChange={(e) => setPassword(e.target.value)} name='password' value={password} />
+            <input onChange={(e) => setPassword(e.target.value)} type='password' name='password' value={password} />
           </label>
           <br />
           <button type='submit'>Submit</button>
