@@ -78,6 +78,7 @@ const usersSlice = createSlice({
         if (action.payload instanceof AxiosError) {
           state.error = action.payload.message
         } else {
+          state.error = ''
           state.users = action.payload
         }
         state.loading = false
@@ -92,6 +93,7 @@ const usersSlice = createSlice({
       if (action.payload instanceof AxiosError) {
         state.error = action.payload.message
       } else {
+        state.error = ''
         state.currentUser = action.payload
       }
       state.loading = false
@@ -100,6 +102,7 @@ const usersSlice = createSlice({
       if (action.payload instanceof AxiosError) {
         state.error = action.payload.message
       } else {
+        state.error = ''
         state.users.push(action.payload)
       }
     })

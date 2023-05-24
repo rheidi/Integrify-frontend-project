@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import useAppDispatch from '../hooks/useAppDispatch'
 import useAppSelector from '../hooks/useAppSelector'
-import { deleteProduct, fetchAllProducts, sortByPrice } from '../redux/reducers/productsReducer'
+import { fetchAllProducts, sortByPrice } from '../redux/reducers/productsReducer'
 import { Product } from '../types/Product'
 import { Link } from 'react-router-dom'
 
@@ -70,10 +70,7 @@ const Products = () => {
           <Link to={'/products/'+p.id}>More information</Link>
           <br />
           {currentUser && currentUser.role === 'admin' &&
-            <div>
-              <button onClick={() => dispatch(deleteProduct(p.id))}>Delete product</button>
-              <Link to={'/edit_product/'+p.id}>Edit product</Link>
-            </div>
+            <Link to={'/edit_product/'+p.id}>Edit/delete product</Link>
           }
           <hr />
         </div>

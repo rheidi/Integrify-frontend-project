@@ -1,22 +1,30 @@
 import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { AxiosError } from 'axios'
 
 import useAppDispatch from '../hooks/useAppDispatch'
 import { login } from '../redux/reducers/usersReducer'
-import { Link, useNavigate } from 'react-router-dom'
+import useAppSelector from '../hooks/useAppSelector'
 
 const Login = () => {
   const dispatch = useAppDispatch()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
+  const { error } = useAppSelector(state => state.usersReducer)
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     dispatch(login({email, password}))
-    navigate('/')
+      .then((action) => {
+        if (!(action.payload instanceof AxiosError)) {
+          navigate('/')
+        }
+      })
   }
   return (
     <div>
       <h1>Login</h1>
+      { error && error !== '' && <p className="error">{error}</p> }
       <form onSubmit={(e) => handleSubmit(e)}>
         <fieldset>
           <legend>Log in:</legend>        
