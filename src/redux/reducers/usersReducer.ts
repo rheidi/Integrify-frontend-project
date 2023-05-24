@@ -74,7 +74,8 @@ const usersSlice = createSlice({
     emptyUsersReducer: (state) => {
       state.users = []
     },
-    updateOneUser: (state, action) => {
+    logOutUser: (state) => {
+      return initialState
     }
   },
   extraReducers: (build) => {

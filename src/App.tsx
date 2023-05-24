@@ -9,6 +9,7 @@ import Profile from './pages/Profile'
 import Login from './pages/Login'
 import SignUp from './pages/SignUp'
 import CreateNewProduct from './pages/CreateNewProduct'
+import EditProduct from './pages/EditProduct'
 
 const App = () => {
   const userState = useAppSelector(state => state.usersReducer)
@@ -33,7 +34,9 @@ const App = () => {
           </Route>
           <Route element={<PrivateRoutes isAllowed={!!currentUser && currentUser.role === 'admin'}/>}>
             <Route path='new_product' element={<CreateNewProduct />} />
+            <Route path='edit_product/:id' element={<EditProduct />} />
           </Route>
+
         </Route>
       </Routes>
     </BrowserRouter>
