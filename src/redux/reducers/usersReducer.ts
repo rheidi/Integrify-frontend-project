@@ -113,5 +113,5 @@ const usersSlice = createSlice({
 })
 
 const usersReducer = usersSlice.reducer
-export const { updateUserReducer } = usersSlice.actions
+export const { updateUserReducer, logOutUser } = usersSlice.actions
 export default usersReducer

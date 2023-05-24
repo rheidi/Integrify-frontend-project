@@ -1,9 +1,12 @@
 import { Link } from "react-router-dom"
 import useAppSelector from "../hooks/useAppSelector"
+import useAppDispatch from "../hooks/useAppDispatch"
+import { logOutUser } from "../redux/reducers/usersReducer"
 
 function Navbar() {
     const userState = useAppSelector(state => state.usersReducer)
     const {currentUser} = userState
+    const dispatch = useAppDispatch()
 
     return (
         <nav>
@@ -23,7 +26,12 @@ function Navbar() {
                     <li><Link to='/new_product'>Create a new product</Link></li>
                 }                
             </ul>
-            {currentUser ? <p>Current User: {currentUser.name}</p> : ''}
+            {currentUser ?
+            <div>
+                <p>Current User: {currentUser.name}</p>
+                <button onClick={() => dispatch(logOutUser())}>Log out</button>
+            </div>
+            : ''}
         </nav>
     )
 }
