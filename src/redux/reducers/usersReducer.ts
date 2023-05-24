@@ -33,9 +33,9 @@ export const fetchAllUsers = createAsyncThunk(
 
 export const newUser = createAsyncThunk(
   'newUser',
-  async ({name, email, password, avatar}: NewUser) => {
+  async (newUser: NewUser) => {
     try {
-      const result = await axios.post<User>('https://api.escuelajs.co/api/v1/users/', {name, email, password, avatar})
+      const result = await axios.post<User>('https://api.escuelajs.co/api/v1/users/', newUser)
       return result.data
     }
     catch (e) {
@@ -68,12 +68,6 @@ const usersSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
-    updateUserReducer: (state, action: PayloadAction<User[]>) => {
-      //return action.payload
-    },
-    emptyUsersReducer: (state) => {
-      state.users = []
-    },
     logOutUser: (state) => {
       return initialState
     }
@@ -113,5 +107,5 @@ const usersSlice = createSlice({
 })
 
 const usersReducer = usersSlice.reducer
-export const { updateUserReducer, logOutUser } = usersSlice.actions
+export const { logOutUser } = usersSlice.actions
 export default usersReducer
