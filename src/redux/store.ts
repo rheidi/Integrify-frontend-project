@@ -4,12 +4,31 @@ import productsReducer from "./reducers/productsReducer";
 import usersReducer from "./reducers/usersReducer";
 import cartReducer from "./reducers/cartReducer";
 
+const storedUser = localStorage.getItem('user')
+const storedCart = localStorage.getItem('cart')
+
 const store = configureStore({
   reducer: {
     productsReducer,
     usersReducer,
     cartReducer
   },
+  preloadedState: {
+    productsReducer: {
+      products: [],
+      loading: false,
+      error: ''
+    },
+    usersReducer: {
+      users: [],
+      loading: false,
+      error: '',
+      currentUser: storedUser ? JSON.parse(storedUser) : undefined
+    },
+    cartReducer: {
+      products: JSON.parse(localStorage.getItem('cart') || '[]' )
+    }
+  }
 })
 
 export type GlobalState = ReturnType<typeof store.getState>

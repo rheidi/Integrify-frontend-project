@@ -15,6 +15,7 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     emptyCart: (state) => {
+      window.localStorage.removeItem('cart')
       return initialState
     },
     addProduct: (state, action: PayloadAction<Product>) => {
@@ -28,9 +29,11 @@ const cartSlice = createSlice({
         const product = newProd
         state.products.push({id, quantity, product})
       }
+      window.localStorage.setItem('cart', JSON.stringify(state.products))
     },
     removeProduct: (state, action: PayloadAction<number>) => {
       state.products = state.products.filter(p => p.id != action.payload)
+      window.localStorage.setItem('cart', JSON.stringify(state.products))
     },
     editQuantity: (state, action: PayloadAction<{id: number, q: number}>) => {
       state.products = state.products.map(i => {
@@ -40,6 +43,7 @@ const cartSlice = createSlice({
           i
         )
       })
+      window.localStorage.setItem('cart', JSON.stringify(state.products))
     }
   }
 })

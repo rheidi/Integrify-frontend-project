@@ -55,6 +55,7 @@ export const login = createAsyncThunk(
           'Authorization': `Bearer ${result.data.access_token}`
         }
       })
+      window.localStorage.setItem('user', JSON.stringify(authentication.data))
       return authentication.data
     }
     catch (e) {
@@ -69,6 +70,7 @@ const usersSlice = createSlice({
   initialState,
   reducers: {
     logOutUser: (state) => {
+      window.localStorage.removeItem('user')
       return initialState
     }
   },
