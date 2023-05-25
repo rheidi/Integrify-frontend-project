@@ -2,7 +2,7 @@ import React from 'react'
 import useAppDispatch from '../hooks/useAppDispatch'
 import useAppSelector from '../hooks/useAppSelector'
 import { Link } from 'react-router-dom'
-import { emptyCart, removeProduct } from '../redux/reducers/cartReducer'
+import { editQuantity, emptyCart, removeProduct } from '../redux/reducers/cartReducer'
 
 
 
@@ -16,10 +16,15 @@ const Cart = () => {
     totalProducts += i.quantity
   }
 
+  const handleSubmit = (id: number, e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const q = parseInt((e.currentTarget.elements.namedItem('quantity') as HTMLInputElement).value)
+    dispatch(editQuantity({id, q}))
+  }
+
   return (
     <div>
       <h1>Shopping cart</h1>
-      
       {cart.length === 0 ? (
         <div>
           <h2>Cart is empty</h2>          
@@ -33,7 +38,13 @@ const Cart = () => {
               <p>{i.product.title}</p>
               <p>{i.product.price}</p>
               <p>{i.quantity}</p>
+              <form onSubmit={(e) => handleSubmit(i.id, e)}>
+                <label>Edit quantity</label>
+                <input type='number' min={0} name='quantity' />
+                <input type='submit' value='Update' />
+              </form>
               <button onClick={() => dispatch(removeProduct(i.id))}>Remove product from cart</button>
+
             </div>
           ))}
           <p>Total sum: {totalSum}</p>
