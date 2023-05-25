@@ -2,7 +2,7 @@ import React from 'react'
 import useAppDispatch from '../hooks/useAppDispatch'
 import useAppSelector from '../hooks/useAppSelector'
 import { Link } from 'react-router-dom'
-import { emptyCart } from '../redux/reducers/cartReducer'
+import { emptyCart, removeProduct } from '../redux/reducers/cartReducer'
 
 
 
@@ -33,6 +33,7 @@ const Cart = () => {
               <p>{i.product.title}</p>
               <p>{i.product.price}</p>
               <p>{i.quantity}</p>
+              <button onClick={() => dispatch(removeProduct(i.id))}>Remove product from cart</button>
             </div>
           ))}
           <p>Total sum: {totalSum}</p>
