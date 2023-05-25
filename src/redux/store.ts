@@ -9,7 +9,7 @@ const store = configureStore({
     productsReducer,
     usersReducer,
     cartReducer
-  }
+  },
 })
 
 export type GlobalState = ReturnType<typeof store.getState>
