@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom"
+
 import useAppSelector from "../hooks/useAppSelector"
 import useAppDispatch from "../hooks/useAppDispatch"
 import { logOutUser } from "../redux/reducers/usersReducer"
@@ -12,10 +13,13 @@ function Navbar() {
         <nav>
             <ul>
                 <li>
-                    <Link to="/">Home</Link>
+                    <Link to='/'>Home</Link>
                 </li>
                 <li>
-                    <Link to="/products">Products</Link>
+                    <Link to='/products'>Products</Link>
+                </li>
+                <li>
+                    <Link to='cart'>Shopping cart</Link>
                 </li>
                 {currentUser ?
                     <li><Link to='/profile'>User Page</Link></li>

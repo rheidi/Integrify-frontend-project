@@ -5,6 +5,7 @@ import useAppSelector from '../hooks/useAppSelector'
 import { fetchAllProducts, sortByPrice } from '../redux/reducers/productsReducer'
 import { Product } from '../types/Product'
 import { Link } from 'react-router-dom'
+import { addProduct } from '../redux/reducers/cartReducer'
 
 const getFilteredList = (products: Product[], search: string) => {
   return products.filter(product => product.title.toLowerCase().includes(search.toLocaleLowerCase()))
@@ -67,6 +68,8 @@ const Products = () => {
         <div key={p.id}>
           <p>Product name: {p.title}</p>
           <p>Product price: {p.price}</p>
+          <button onClick={(e) => dispatch(addProduct(p))}>Add to cart</button>
+          <br />
           <Link to={'/products/'+p.id}>More information</Link>
           <br />
           {currentUser && currentUser.role === 'admin' &&
