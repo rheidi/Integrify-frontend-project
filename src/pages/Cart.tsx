@@ -1,11 +1,10 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
+import { Box, Button, Card, CardContent, Grid, Typography } from '@mui/material'
+
 import useAppDispatch from '../hooks/useAppDispatch'
 import useAppSelector from '../hooks/useAppSelector'
-import { Link } from 'react-router-dom'
 import { editQuantity, emptyCart, removeProduct } from '../redux/reducers/cartReducer'
-import { Box, Button, Card, CardContent, Grid, Stack, Typography } from '@mui/material'
-
-
 
 const Cart = () => {
   const cart = useAppSelector(state => state.cartReducer.products)

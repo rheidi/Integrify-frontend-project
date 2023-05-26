@@ -7,6 +7,7 @@ Front-end project for Integrify, by Heidi Rajala
 - Information
 - Technologies
 - Project structure
+- What I learned
 - Getting started
 
 ## Information
@@ -71,6 +72,9 @@ This project uses the API endpoint [Fake Store API](https://fakeapi.platzi.com/)
 └── tsconfig.json
 ```
 
+## What I learned
+
+This was the first time I used redux, so it was quite hard consept to grasp at first. But I'm quite happy that now I think how it works and why it is used. I also learned how to use localStorage for persisting the state.npm install
 
 ## Getting started
 

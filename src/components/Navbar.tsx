@@ -9,7 +9,6 @@ import {
   Typography
 } from '@mui/material'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
-import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 
 import useAppSelector from '../hooks/useAppSelector'
 import useAppDispatch from '../hooks/useAppDispatch'

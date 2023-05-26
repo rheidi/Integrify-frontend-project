@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react'
+import { useParams } from 'react-router'
+import { Box, Typography } from '@mui/material'
 
 import useAppDispatch from '../hooks/useAppDispatch'
 import useAppSelector from '../hooks/useAppSelector'
 import { fetchOneProduct } from '../redux/reducers/productsReducer'
-import { useParams } from 'react-router'
-import { Box, Button, Typography } from '@mui/material'
-import { addProduct } from '../redux/reducers/cartReducer'
 
 const Product = () => {
 
