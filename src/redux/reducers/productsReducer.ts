@@ -10,13 +10,12 @@ interface ProductReducer {
   product?: Product
   loading: boolean
   error: string
-  
 }
 
 const initialState : ProductReducer = {
   products: [],
   loading: false,
-  error: ''
+  error: '',
 }
 
 export const fetchAllProducts = createAsyncThunk(

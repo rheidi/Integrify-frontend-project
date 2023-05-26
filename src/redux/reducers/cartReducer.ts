@@ -1,13 +1,25 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
+
 import { Product } from "../../types/Product"
 import { CartItem } from "../../types/CartItem"
 
 interface ProductReducer {
   products: CartItem[]
+  totalQuantity: number
 }
 
 const initialState : ProductReducer = {
   products: [],
+  totalQuantity: 0
+}
+
+const updateTotalQuantity = (state: ProductReducer) => {
+  let q = 0
+  for (const p of state.products) {
+    q += p.quantity
+  }
+  state.totalQuantity = q
+  localStorage.setItem('totalQuantity', q + '')
 }
 
 const cartSlice = createSlice({
@@ -29,10 +41,12 @@ const cartSlice = createSlice({
         const product = newProd
         state.products.push({id, quantity, product})
       }
+      updateTotalQuantity(state)
       window.localStorage.setItem('cart', JSON.stringify(state.products))
     },
     removeProduct: (state, action: PayloadAction<number>) => {
       state.products = state.products.filter(p => p.id != action.payload)
+      updateTotalQuantity(state)
       window.localStorage.setItem('cart', JSON.stringify(state.products))
     },
     editQuantity: (state, action: PayloadAction<{id: number, q: number}>) => {
@@ -43,6 +57,7 @@ const cartSlice = createSlice({
           i
         )
       })
+      updateTotalQuantity(state)
       window.localStorage.setItem('cart', JSON.stringify(state.products))
     }
   }

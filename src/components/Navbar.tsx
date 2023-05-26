@@ -15,9 +15,9 @@ import useAppSelector from '../hooks/useAppSelector'
 import useAppDispatch from '../hooks/useAppDispatch'
 
 const Navbar = () => {
-  const userState = useAppSelector(state => state.usersReducer)
-  const { currentUser } = userState
   const dispatch = useAppDispatch()
+  const currentUser = useAppSelector(state => state.usersReducer.currentUser)
+  const totalProducts = useAppSelector(state => state.cartReducer.totalQuantity)
 
   return (
     <AppBar position="static">
@@ -45,7 +45,7 @@ const Navbar = () => {
           <Button href="/login">Login</Button>
         )}
         <IconButton color="inherit" href="/cart" sx={{ marginLeft: 'auto' }}>
-          <Badge color="error">
+          <Badge badgeContent={totalProducts} color="error">
             <ShoppingCartIcon />
           </Badge>
         </IconButton>

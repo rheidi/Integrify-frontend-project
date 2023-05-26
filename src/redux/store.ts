@@ -5,7 +5,6 @@ import usersReducer from "./reducers/usersReducer";
 import cartReducer from "./reducers/cartReducer";
 
 const storedUser = localStorage.getItem('user')
-const storedCart = localStorage.getItem('cart')
 
 const store = configureStore({
   reducer: {
@@ -26,7 +25,8 @@ const store = configureStore({
       currentUser: storedUser ? JSON.parse(storedUser) : undefined
     },
     cartReducer: {
-      products: JSON.parse(localStorage.getItem('cart') || '[]' )
+      products: JSON.parse(localStorage.getItem('cart') || '[]' ),
+      totalQuantity: parseInt(localStorage.getItem('totalQuantity') || '0')
     }
   }
 })
