@@ -6,6 +6,7 @@ import { fetchAllProducts, sortByPrice } from '../redux/reducers/productsReducer
 import { Product } from '../types/Product'
 import { Link } from 'react-router-dom'
 import { addProduct } from '../redux/reducers/cartReducer'
+import { Box, Button, Card, CardContent, FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography } from '@mui/material'
 
 const getFilteredList = (products: Product[], search: string) => {
   return products.filter(product => product.title.toLowerCase().includes(search.toLocaleLowerCase()))
@@ -26,12 +27,12 @@ const Products = () => {
     dispatch(fetchAllProducts())
   }, [dispatch])
 
-  const setSortProperty = (sortProperty: string) => {
-    if (sortProperty === 'none') {
+  const setSortProperty = (event: SelectChangeEvent) => {
+    if (event.target.value === 'none') {
       dispatch(fetchAllProducts())
-    } else if (sortProperty === 'priceAsc') {
+    } else if (event.target.value === 'priceAsc') {
       dispatch(sortByPrice('priceAsc'))
-    } else if (sortProperty === 'priceDesc') {
+    } else if (event.target.value === 'priceDesc') {
       dispatch(sortByPrice('priceDesc'))
     }
   }
@@ -41,44 +42,50 @@ const Products = () => {
   }
 
   const userState = useAppSelector(state => state.usersReducer)
-    const {currentUser} = userState
+  const {currentUser} = userState
 
   return (
-    <div>
-      <h1>Products</h1>
-      <div className='dropdownSort'>
-        <label htmlFor='sort'>Sort by: </label>
-        <select id='sort' onChange={(event) => setSortProperty(event.target.value)}>
-          <option value={'none'}>none</option>
-          <option value={'priceAsc'}>Price, ascending</option>
-          <option value={'priceDesc'}>Price, descending</option>
-        </select>
-      </div>
-      <div>
-      <label htmlFor='search'>Search for a product: </label>
-        <input 
-          type='text'
-          name='search'
-          id='search'
-          value={search}
-          onChange={onSearchChange}
-        />
-      </div>
+    <Box sx={{ p: 2 }}>
+      <Typography variant='h1' gutterBottom >Products</Typography>
+      <Box className='dropdownSort' sx={{p:1}}>
+        <FormControl sx={{minWidth: 233}}>
+        <InputLabel id='sort'>Sort</InputLabel>
+        <Select id='sort' value='sort' label='Sort' onChange={setSortProperty}>
+          <MenuItem value={'none'}>none</MenuItem>
+          <MenuItem value={'priceAsc'}>Price, ascending</MenuItem>
+          <MenuItem value={'priceDesc'}>Price, descending</MenuItem>
+        </Select>
+        </FormControl>
+      </Box>
+      <Box>
+      <TextField
+        sx={{p:1, minWidth: 250}}
+        type='text'
+        label='Search'
+        id='search'
+        value={search}
+        onChange={onSearchChange}
+      />
+      </Box>
+      <Grid container spacing={2} sx={{pt:1}}>
       {filterProducts.map(p => (
-        <div key={p.id}>
-          <p>Product name: {p.title}</p>
-          <p>Product price: {p.price}</p>
-          <button onClick={(e) => dispatch(addProduct(p))}>Add to cart</button>
-          <br />
-          <Link to={'/products/'+p.id}>More information</Link>
-          <br />
-          {currentUser && currentUser.role === 'admin' &&
-            <Link to={'/edit_product/'+p.id}>Edit/delete product</Link>
-          }
-          <hr />
-        </div>
+        <Grid item key={p.id}>
+          <Card sx={{ width: 300}}>
+            <CardContent>
+              <Typography gutterBottom variant="h5">{p.title}</Typography>
+              <Typography>price: {p.price}</Typography>
+              <Button onClick={(e) => dispatch(addProduct(p))}>Add to cart</Button>
+              <br />
+              <Link to={'/products/'+p.id}>More information</Link>
+              {currentUser && currentUser.role === 'admin' &&
+                <Link to={'/edit_product/'+p.id}>Edit/delete product</Link>
+              }
+            </CardContent>
+          </Card>
+        </Grid>
       ))}
-    </div>
+      </Grid>
+    </Box>
   )
 }
 

@@ -4,27 +4,28 @@ import useAppDispatch from '../hooks/useAppDispatch'
 import useAppSelector from '../hooks/useAppSelector'
 import { fetchOneProduct } from '../redux/reducers/productsReducer'
 import { useParams } from 'react-router'
+import { Box, Button, Typography } from '@mui/material'
+import { addProduct } from '../redux/reducers/cartReducer'
 
 const Product = () => {
 
   const id = useParams().id
   const productState = useAppSelector(state => state.productsReducer)
+  const dispatch = useAppDispatch() 
   
-  const dispatch = useAppDispatch()
-
   useEffect(() => {
     dispatch(fetchOneProduct(id))
   }, [dispatch, id])
 
   return (
-    <div>
-      <h1>Product info</h1>
-      <p>Name: {productState.product?.title}</p>
-      <p>Price: {productState.product?.price}</p>
-      <p>Category: {productState.product?.category.name}</p>
-      <p>Description: {productState.product?.description}</p>
-      <img src={productState.product?.images[0]} alt='A product pic' />
-    </div>
+    <Box sx={{p: 2}}>
+      <Typography variant='h1'>Product info</Typography>
+      <Typography variant='h3'>{productState.product?.title}</Typography>
+      <Typography variant='subtitle2'>Price: {productState.product?.price}</Typography>
+      <Typography variant='body2'>From category {productState.product?.category.name}</Typography>
+      <Typography variant='body1'>Description: {productState.product?.description}</Typography>
+      <img src={productState.product?.images[0]} width={200} alt='A product pic' />
+    </Box>
   )
 }
 

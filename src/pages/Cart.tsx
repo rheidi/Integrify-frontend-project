@@ -3,6 +3,7 @@ import useAppDispatch from '../hooks/useAppDispatch'
 import useAppSelector from '../hooks/useAppSelector'
 import { Link } from 'react-router-dom'
 import { editQuantity, emptyCart, removeProduct } from '../redux/reducers/cartReducer'
+import { Box, Button, Card, CardContent, Grid, Stack, Typography } from '@mui/material'
 
 
 
@@ -23,38 +24,46 @@ const Cart = () => {
   }
 
   return (
-    <div>
-      <h1>Shopping cart</h1>
+    <Box sx={{p:2}}>
+      <Typography variant='h1' gutterBottom>Shopping cart</Typography>
+      
       {cart.length === 0 ? (
-        <div>
-          <h2>Cart is empty</h2>          
+        <Box>
+          <Typography gutterBottom variant='h5'>Cart is still empty</Typography>          
           <Link to={'/products'}>Shop here</Link>
-        </div>
+        </Box>
       ) : (
-        <div>
-          <h2>Products in cart</h2>
-          {cart.map(i => (
-            <div key={i.id}>
-              <p>{i.product.title}</p>
-              <p>{i.product.price}</p>
-              <p>{i.quantity}</p>
-              <form onSubmit={(e) => handleSubmit(i.id, e)}>
-                <label>Edit quantity</label>
-                <input type='number' min={0} name='quantity' />
-                <input type='submit' value='Update' />
-              </form>
-              <button onClick={() => dispatch(removeProduct(i.id))}>Remove product from cart</button>
-
-            </div>
-          ))}
-          <p>Total sum: {totalSum}</p>
-          <p>Total amount of products: {totalProducts}</p>
-          <button onClick={(e) => dispatch(emptyCart())}>Empty cart</button>
-        </div>
+        <Box>
+          <Typography variant='h3'>Products in cart:</Typography>
+          <Grid container spacing={2} sx={{pt:1}}>
+            {cart.map(i => (
+              <Grid item key={i.id} minWidth={700}>
+                <Card>
+                  <CardContent>
+                    <Typography gutterBottom variant="h5">{i.product.title}</Typography>
+                    <Typography variant='subtitle2'>Price: {i.product.price}</Typography>
+                    <Typography variant='subtitle2'>In cart: {i.quantity}</Typography>
+                    <Typography variant='subtitle2'>Total price: {i.product.price * i.quantity}</Typography>
+                    <form onSubmit={(e) => handleSubmit(i.id, e)}>
+                      <label>Edit quantity</label>
+                      <input type='number' min={0} name='quantity' />
+                      <input type='submit' value='Update' />
+                    </form>
+                    <Button onClick={() => dispatch(removeProduct(i.id))}>Remove product from cart</Button>
+                  </CardContent>
+                </Card>
+              </Grid>
+              
+            ))}
+          </Grid>
+          <Typography variant='subtitle2'>Sum in total: {totalSum}</Typography>
+          <Typography variant='subtitle2'>Total amount of products: {totalProducts}</Typography>
+          <Button onClick={(e) => dispatch(emptyCart())}>Empty cart</Button>
+        </Box>
         
       )
       }
-    </div>
+    </Box>
   )
 }
 

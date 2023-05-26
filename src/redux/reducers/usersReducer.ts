@@ -50,6 +50,7 @@ export const login = createAsyncThunk(
   async ({email, password}: UserCredential) => {
     try {
       const result = await axios.post<{access_token: string}>('https://api.escuelajs.co/api/v1/auth/login', {email, password})
+      
       const authentication = await axios.get<User>('https://api.escuelajs.co/api/v1/auth/profile', {
         headers: {
           'Authorization': `Bearer ${result.data.access_token}`

@@ -1,12 +1,13 @@
+import { Padding } from '@mui/icons-material'
+import { Box, Typography } from '@mui/material'
 import React from 'react'
 
 const Home = () => {
   return (
-    <div>
-      <h1>Y.A.W.</h1>
-      <p>Yet Another Webshop</p>
-      <br />
-    </div>
+    <Box sx={{ p: 2 }}>
+      <Typography variant='h1'>Y.A.W.</Typography>
+      <Typography variant='body1'>Yet Another Webshop</Typography>
+    </Box>
   )
 }
 

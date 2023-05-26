@@ -1,42 +1,45 @@
-import { Link } from "react-router-dom"
+import { logOutUser } from "../redux/reducers/usersReducer"
+import { AppBar, Badge, Box, Button, IconButton, Toolbar, Typography } from "@mui/material"
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
+import AccountCircleIcon from "@mui/icons-material/AccountCircle"
 
 import useAppSelector from "../hooks/useAppSelector"
 import useAppDispatch from "../hooks/useAppDispatch"
-import { logOutUser } from "../redux/reducers/usersReducer"
+import { SwitchLeft } from "@mui/icons-material"
 
-function Navbar() {
+const Navbar = () => {
     const userState = useAppSelector(state => state.usersReducer)
     const {currentUser} = userState
     const dispatch = useAppDispatch()
 
     return (
-        <nav>
-            <ul>
-                <li>
-                    <Link to='/'>Home</Link>
-                </li>
-                <li>
-                    <Link to='/products'>Products</Link>
-                </li>
-                <li>
-                    <Link to='cart'>Shopping cart</Link>
-                </li>
-                {currentUser ?
-                    <li><Link to='/profile'>User Page</Link></li>
+        <AppBar position='static'>
+            <Toolbar>
+                <Box sx={{ flexGrow: 1}}>
+                    <Button href='/'>Home</Button>
+                    <Button href='/products'>All products</Button>
+                    {currentUser ?
+                    <Button href='/profile'>Profile</Button>
                     :
-                    <li><Link to='/login'>Login</Link></li>
-                }
-                {currentUser && currentUser.role === 'admin' &&
-                    <li><Link to='/new_product'>Create a new product</Link></li>
-                }                
-            </ul>
-            {currentUser ?
-            <div>
-                <p>Current User: {currentUser.name}</p>
-                <button onClick={() => dispatch(logOutUser())}>Log out</button>
-            </div>
-            : ''}
-        </nav>
+                    <Button href='/login'>Login</Button>
+                    }
+                    {currentUser && currentUser.role === 'admin' &&
+                        <Button href='/new_product'>Create a new product</Button>
+                    }
+                    {currentUser ?
+                        <>
+                            <Typography variant="button">Current User: {currentUser.name}</Typography>
+                            <Button onClick={() => dispatch(logOutUser())}>Log out</Button>
+                        </>
+                    : ''}
+                    <IconButton color="inherit" href='/cart' sx={{marginLeft: 'auto'}}>
+                        <Badge color="error">
+                            <ShoppingCartIcon />
+                        </Badge>
+                    </IconButton>
+                </Box>
+            </Toolbar>
+        </AppBar>
     )
 }
 
