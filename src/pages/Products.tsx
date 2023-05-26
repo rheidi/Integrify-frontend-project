@@ -50,7 +50,7 @@ const Products = () => {
       <Box className='dropdownSort' sx={{p:1}}>
         <FormControl sx={{minWidth: 233}}>
         <InputLabel id='sort'>Sort</InputLabel>
-        <Select id='sort' value='sort' label='Sort' onChange={setSortProperty}>
+        <Select id='sort' value='none' label='Sort' onChange={setSortProperty}>
           <MenuItem value={'none'}>none</MenuItem>
           <MenuItem value={'priceAsc'}>Price, ascending</MenuItem>
           <MenuItem value={'priceDesc'}>Price, descending</MenuItem>
