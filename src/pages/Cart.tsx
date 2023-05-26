@@ -14,7 +14,6 @@ const Cart = () => {
   const totalProducts = useAppSelector(state => state.cartReducer.totalQuantity)
   for (const i of cart) {
     totalSum += i.product.price * i.quantity
-    //totalProducts += i.quantity
   }
 
   const handleSubmit = (id: number, e: React.FormEvent<HTMLFormElement>) => {
