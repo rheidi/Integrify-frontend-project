@@ -14,35 +14,46 @@ const Login = () => {
   const { error } = useAppSelector(state => state.usersReducer)
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    dispatch(login({email, password}))
-      .then((action) => {
-        if (!(action.payload instanceof AxiosError)) {
-          navigate('/')
-        }
-      })
+    dispatch(login({ email, password })).then(action => {
+      if (!(action.payload instanceof AxiosError)) {
+        navigate('/')
+      }
+    })
   }
   return (
     <div>
       <h1>Login</h1>
-      { error && error !== '' && <p className="error">{error}</p> }
-      <form onSubmit={(e) => handleSubmit(e)}>
+      {error && error !== '' && <p className="error">{error}</p>}
+      <form onSubmit={e => handleSubmit(e)}>
         <fieldset>
-          <legend>Log in:</legend>        
-          <label id='email'>email:
-            <input onChange={(e) => setEmail(e.target.value)} type='email' name='email' value={email} />
+          <legend>Log in:</legend>
+          <label id="email">
+            email:
+            <input
+              onChange={e => setEmail(e.target.value)}
+              type="email"
+              name="email"
+              value={email}
+            />
           </label>
           <br />
-          <label id='password'>password:
-            <input onChange={(e) => setPassword(e.target.value)} type='password' name='password' value={password} />
+          <label id="password">
+            password:
+            <input
+              onChange={e => setPassword(e.target.value)}
+              type="password"
+              name="password"
+              value={password}
+            />
           </label>
           <br />
-          <button type='submit'>Submit</button>
+          <button type="submit">Submit</button>
         </fieldset>
       </form>
       <br />
       <h2>Register</h2>
       <p>If you don't have an account, you can register here:</p>
-      <Link to='/signup'>Sign up here</Link>
+      <Link to="/signup">Sign up here</Link>
     </div>
   )
 }
