@@ -81,4 +81,4 @@ This was the first time I used redux, so it was quite hard consept to grasp at f
 Clone the repository from github using `git clone`.
 Run `npm run watch`.
 Or run `npm run build && npm run start`.
-Or just visit [https://breweries-app-six.vercel.app/](https://breweries-app-six.vercel.app/).
+Or just visit [https://deft-rabanadas-68e1e6.netlify.app/](https://deft-rabanadas-68e1e6.netlify.app/).
